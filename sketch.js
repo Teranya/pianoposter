@@ -47,20 +47,36 @@ var scribble = new Scribble(); // global mode
 
 var serial; // variable to hold an instance of the serialport library
 var options = {
-    baudRate: 9600
-}; //  baudrate set to 9600 to  match Arduino baudrate
+    baudRate: 9600 //  baudrate set to 9600 to  match Arduino baudrate
+};
 
 
 
 //preload all the audio files from assets folder
+
 function preload() {
-    noteb1 = loadSound('assets/crystal/B1.mp3');
-    noteb2 = loadSound('assets/crystal/B2.mp3');
-    noteb3 = loadSound('assets/crystal/B3.mp3');
-    noteb4 = loadSound('assets/crystal/B4.mp3');
-    noteb5 = loadSound('assets/crystal/B5.mp3');
-    noteb6 = loadSound('assets/crystal/B6.mp3');
-    noteb7 = loadSound('assets/crystal/B7.mp3');
+    //    noteb1 = loadSound('assets/crystal/B1.mp3');
+    //    noteb2 = loadSound('assets/crystal/B2.mp3');
+    //    noteb3 = loadSound('assets/crystal/B3.mp3');
+    //    noteb4 = loadSound('assets/crystal/B4.mp3');
+    //    noteb5 = loadSound('assets/crystal/B5.mp3');
+    //    noteb6 = loadSound('assets/crystal/B6.mp3');
+    //    noteb7 = loadSound('assets/crystal/B7.mp3');
+
+    //    celesta
+
+    noteb1 = loadSound('assets/celesta/C1.mp3');
+    noteb2 = loadSound('assets/celesta/C2.mp3');
+    noteb3 = loadSound('assets/celesta/C3.mp3');
+    noteb4 = loadSound('assets/celesta/C4.mp3');
+    noteb5 = loadSound('assets/celesta/C5.mp3');
+    noteb6 = loadSound('assets/celesta/C6.mp3');
+    noteb7 = loadSound('assets/celesta/C7.mp3');
+
+
+
+
+    //    glockenspiel
     notec1 = loadSound('assets/glockenspiel/C1.mp3');
     notec2 = loadSound('assets/glockenspiel/C2.mp3');
     notec3 = loadSound('assets/glockenspiel/A0.mp3');
@@ -68,13 +84,16 @@ function preload() {
 }
 
 function setup() {
-    //    createCanvas(windowHeight, windowWidth);
+    //    create canvas window size
+    //    createCanvas(windowHeight, windowWidth); 
+    //    create canvas 1200px x 2000 px
     createCanvas(1200, 2000);
 
     //    set color mode
 
     colorMode(HSB);
 
+    // set angle mode for circle
     angleMode(DEGREES);
 
     // Instantiate our SerialPort object
@@ -87,8 +106,11 @@ function setup() {
     serial.open("/dev/tty.usbmodem14201");
 
     serial.on('connected', serverConnected);
+    // get a list of all ports
     serial.on('list', gotList);
+
     serial.on('data', gotData);
+
     // If code throws error  
     serial.on('error', gotError);
 
@@ -98,23 +120,19 @@ function setup() {
 
 
     // Start a new amplitude instance for the tracks
-
     amplitude = new p5.Amplitude();
 
     // Start a new reverb instance for the tracks
-
     reverb = new p5.Reverb();
 
     // Start a new delay instance for the tracks
-
     delay = new p5.Delay();
 
-    // start a new Fast Fourier Transform
-
+    // start a new Fast Fourier Transform for the amplitude c
     fft = new p5.FFT(0.5, 64);
     //    w = width / 64;
 
-    //add the delay process for the notes
+    //add the delay process for the notes, function(track, delayTime[max1], feedback, filter, frequency)
     delay.process(notec1, 0.9, .7, 2300);
     delay.process(notec2, 0.9, .7, 2300);
     delay.process(notec3, 0.9, .7, 2300);
@@ -285,23 +303,11 @@ function draw() {
     if (sensor10 > 60) {
         notec3.play();
         text("glockenspiel C3", 400, 90);
-        //        delay.process(noteb1, 0.01, 0.5, 3000);
-        //        delay.process(noteb2, 0.01, 0.5, 3000);
-        //        delay.process(noteb3, 0.01, 0.5, 3000);
-        //        delay.process(noteb4, 0.01, 0.5, 3000);
-        //        delay.process(noteb5, 0.01, 0.5, 3000);
-        //        delay.process(noteb6, 0.01, 0.5, 3000);
 
     }
     if (sensor11 > 60) {
         notec4.play();
         text("glockenspiel C4", 400, 105);
-        //        delay.process(noteb1, 0.14, 0.5, 2300);
-        //        delay.process(noteb2, 0.14, 0.5, 2300);
-        //        delay.process(noteb3, 0.14, 0.5, 2300);
-        //        delay.process(noteb4, 0.14, 0.5, 2300);
-        //        delay.process(noteb5, 0.14, 0.5, 2300);
-        //        delay.process(noteb6, 0.14, 0.5, 2300);
 
     }
 
@@ -320,57 +326,7 @@ function draw() {
     noFill();
     scribble.scribbleEllipse(-390, 200, size2 * 2, size2 * 2);
     scribble.scribbleEllipse(390, 200, size2 * 1.5, size2 * 1.5);
-    //    ellipse(width / 2, height / 2, size, size);
 
-
-
-
-
-    //    if (sensor3 > 300) {
-    //        noted.play();
-    //    } else {
-    //        noted.stop();
-    //    }
-    //    if (sensor4 > 300) {
-    //        notef.play();
-    //    } else {
-    //        notef.stop();
-    //    }
-
-
-
-
-
-
-
-
-
-    //    let spectrum = fft.analyze();
-    //    noStroke();
-    //    fill(0, 102, 153); // spectrum is green
-    //    for (var i = 0; i < spectrum.length; i++) {
-    //        let x = map(i, 0, spectrum.length, 0, width);
-    //        let h = -height + map(spectrum[i], 0, 255, height, 0);
-    //        rect(x, height, width / spectrum.length, h / 2)
-    //    }
-
-
-    // create a waveform based on audio frequencies within whats playing
-    //
-    //        let waveform = fft.waveform();
-    //        noFill();
-    //        beginShape();
-    //        stroke(255, 255, 255); // waveform is red
-    //        strokeWeight(3);
-    //
-    //        for (var i = 0; i < waveform.length; i++) {
-    //            let x = map(i, 0, waveform.length, 0, width);
-    //            let y = map(waveform[i], -1, 1, 0, height);
-    //            vertex(x / 2, y);
-    //
-    //
-    //        }
-    //    endShape();
 
 
 }
